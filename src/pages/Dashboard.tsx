@@ -21,4 +21,4 @@ const Dashboard = () => {
   );
 };
 
-export default DashboardPage;
+export default Dashboard;
