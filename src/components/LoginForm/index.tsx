@@ -1,4 +1,5 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import { LoginFormValues, LoginFormProps } from "./types"
 import * as Yup from "yup";
 import styled from "styled-components";
 
@@ -28,11 +29,6 @@ const Error = styled(ErrorMessage)`
   color: red;
 `;
 
-interface LoginFormValues {
-  email: string;
-  password: string;
-}
-
 const initialValues: LoginFormValues = {
   email: "",
   password: "",
@@ -42,10 +38,6 @@ const validationSchema = Yup.object({
   email: Yup.string().email("Invalid email address").required("Required"),
   password: Yup.string().required("Required"),
 });
-
-interface LoginFormProps {
-  onSubmit: (values: LoginFormValues) => void;
-}
 
 export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
   return (

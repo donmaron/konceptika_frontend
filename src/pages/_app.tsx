@@ -3,6 +3,7 @@ import { Provider } from "react-redux";
 import { ThemeProvider } from "styled-components";
 import store from "../store";
 import { GlobalStyles } from "../GlobalStyles";
+import { StaticRouter } from 'react-router-dom/server';
 
 const theme = {
   colors: {
@@ -15,7 +16,9 @@ function MyApp({ Component, pageProps }: AppProps) {
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         <GlobalStyles />
-        <Component {...pageProps} />
+          <StaticRouter>
+            <Component {...pageProps} />
+          </StaticRouter>
       </ThemeProvider>
     </Provider>
   );

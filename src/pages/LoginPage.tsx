@@ -1,6 +1,7 @@
-import { useAppDispatch } from "../store";
+import { useAppDispatch } from "../hooks";
 import { login } from "../authSlice";
 import { LoginForm } from "../components/LoginForm";
+import { LoginFormValues } from "../components/LoginForm/types";
 
 const LoginPage = () => {
   const dispatch = useAppDispatch();

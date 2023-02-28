@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AppDispatch } from "./index";
+import { AppDispatch } from "./store";
 import axios from "axios";
 
 interface User {
@@ -34,7 +34,7 @@ export const login = (data: { email: string; password: string }) => async (
   dispatch: AppDispatch
 ) => {
   try {
-    const response = await axios.post("/api/login", data);
+    const response = await axios.post("https://apingweb.com/api/login", data);
     dispatch(loginSuccess(response.data));
   } catch (error) {
     console.error(error);

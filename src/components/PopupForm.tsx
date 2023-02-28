@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useAppSelector, useAppDispatch } from '../hooks'
 import { fetchProducts } from "../store/productsSlice";
 
 interface PopupFormProps {
@@ -17,7 +17,7 @@ interface PopupFormProps {
 
 const PopupForm = ({ mode, product, onClose }: PopupFormProps) => {
   const [error, setError] = useState("");
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const formik = useFormik({
     initialValues: {
@@ -44,7 +44,7 @@ const PopupForm = ({ mode, product, onClose }: PopupFormProps) => {
         }
         onClose();
         dispatch(fetchProducts());
-      } catch (error) {
+      } catch (error: any) {
         setError(error.message);
         setSubmitting(false);
       }

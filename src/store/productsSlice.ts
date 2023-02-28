@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AppDispatch } from "../store";
+import { AppDispatch } from ".";
 import axios from "axios";
 
 interface Product {
@@ -31,6 +31,7 @@ export const productsSlice = createSlice({
       state.loading = false;
       state.error = null;
       state.data = action.payload;
+      console.log(action.payload)
     },
     getProductsFailure: (state, action: PayloadAction<string>) => {
       state.loading = false;
@@ -44,9 +45,9 @@ export const { getProductsStart, getProductsSuccess, getProductsFailure } = prod
 export const fetchProducts = () => async (dispatch: AppDispatch) => {
   dispatch(getProductsStart());
   try {
-    const response = await axios.get("/api/products");
+    const response = await axios.get("https://fakestoreapi.com/products");
     dispatch(getProductsSuccess(response.data));
-  } catch (error) {
+  } catch (error: any) {
     dispatch(getProductsFailure(error.message));
   }
 };

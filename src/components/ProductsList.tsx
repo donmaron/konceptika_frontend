@@ -1,13 +1,19 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { fetchProducts } from "../store/productsSlice";
+import { useState, useMemo, useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../hooks";
+import { fetchProducts, selectProducts, selectProductsLoading, selectProductsError } from "../store/productsSlice";
 import PopupForm from "./PopupForm";
+import styled from 'styled-components';
+import ProductForm from "./ProductForm";
 
 const ProductsList = () => {
-  const dispatch = useDispatch();
-  const products = useSelector(selectProducts);
-  const isLoading = useSelector(selectProductsLoading);
-  const error = useSelector(selectProductsError);
+    const dispatch = useAppDispatch();
+    useEffect(() => {
+            dispatch(fetchProducts())
+      }, []);
+  
+  const products = useAppSelector(selectProducts);
+  const isLoading = useAppSelector(selectProductsLoading);
+  const error = useAppSelector(selectProductsError);
 const [selectedProduct, setSelectedProduct] = useState<{ id: number; name: string; price: number } | null>(null);
 const [showAddForm, setShowAddForm] = useState(false);
 const [showEditForm, setShowEditForm] = useState(false);
@@ -57,66 +63,66 @@ const currentProducts = useMemo(() => {
 
   
 
-const handleAddProduct = () => {
-setSelectedProduct(null);
-setShowAddForm(true);
-};
+// const handleAddProduct = () => {
+// setSelectedProduct(null);
+// setShowAddForm(true);
+// };
 
-const handleEditProduct = (product) => {
-    setEditedProduct(product);
-    setShowEditPopup(true);
-  };
+// const handleEditProduct = (product) => {
+//     setEditedProduct(product);
+//     setShowEditPopup(true);
+//   };
 
-  const handleDeleteProduct = (product) => {
-    setDeletedProduct(product);
-    setShowDeletePopup(true);
-  };
+//   const handleDeleteProduct = (product) => {
+//     setDeletedProduct(product);
+//     setShowDeletePopup(true);
+//   };
   
 
-const handleCloseForms = () => {
-setShowAddForm(false);
-setShowEditForm(false);
-setShowDeleteForm(false);
-};
+// const handleCloseForms = () => {
+// setShowAddForm(false);
+// setShowEditForm(false);
+// setShowDeleteForm(false);
+// };
 
-const Popup = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+// const Popup = styled.div`
+//   position: fixed;
+//   top: 0;
+//   left: 0;
+//   width: 100%;
+//   height: 100%;
+//   background-color: rgba(0, 0, 0, 0.5);
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
 
-  > div {
-    background-color: white;
-    padding: 1rem;
-    border-radius: 5px;
-  }
-`;
+//   > div {
+//     background-color: white;
+//     padding: 1rem;
+//     border-radius: 5px;
+//   }
+// `;
 
 
-const ProductFormPopup = ({ product, onSubmit, onCancel }) => {
-    return (
-      <Popup>
-        <h2>Edit Product</h2>
-        <ProductForm product={product} onSubmit={onSubmit} onCancel={onCancel} />
-      </Popup>
-    );
-  };
+// const ProductFormPopup = ({ product, onSubmit, onCancel }) => {
+//     return (
+//       <Popup>
+//         <h2>Edit Product</h2>
+//         <ProductForm product={product} onSubmit={onSubmit} onCancel={onCancel} />
+//       </Popup>
+//     );
+//   };
   
-  const ProductDeleteConfirmation = ({ product, onConfirm, onCancel }) => {
-    return (
-      <Popup>
-        <h2>Delete Product</h2>
-        <p>Are you sure you want to delete the product {product.name}?</p>
-        <button onClick={onConfirm}>Yes</button>
-        <button onClick={onCancel}>No</button>
-      </Popup>
-    );
-  };
+//   const ProductDeleteConfirmation = ({ product, onConfirm, onCancel }) => {
+//     return (
+//       <Popup>
+//         <h2>Delete Product</h2>
+//         <p>Are you sure you want to delete the product {product.name}?</p>
+//         <button onClick={onConfirm}>Yes</button>
+//         <button onClick={onCancel}>No</button>
+//       </Popup>
+//     );
+//   };
   
   
   
@@ -171,24 +177,24 @@ return (
 
 {isLoading && <div>Loading...</div>}
 {error && <div>{error}</div>}
-<button onClick={handleAddProduct}>Add Product</button>
+{/* <button onClick={handleAddProduct}>Add Product</button> */}
 <ul>
   {currentProducts.map((product) => (
     <li key={product.id}>
       {product.name} ({product.price})
-      <button onClick={() => handleEditProduct(product)}>Edit</button>
-      <button onClick={() => handleDeleteProduct(product)}>Delete</button>
+      {/* <button onClick={() => handleEditProduct(product)}>Edit</button>
+      <button onClick={() => handleDeleteProduct(product)}>Delete</button> */}
     </li>
   ))}
 </ul>
 
 
 
-{showAddForm && <PopupForm mode="add" onClose={handleCloseForms} />}
+{/* {showAddForm && <PopupForm mode="add" onClose={handleCloseForms} />}
 {showEditForm && selectedProduct && <PopupForm mode="edit" product={selectedProduct} onClose={handleCloseForms} />}
 {showDeleteForm && selectedProduct && (
 <PopupForm mode="delete" product={selectedProduct} onClose={handleCloseForms} />
-)}
+)} */}
 <button onClick={() => setCurrentPage(currentPage - 1)}>Prev</button>
 <div>
   Page {currentPage} of {Math.ceil(filteredProducts.length / productsPerPage)}
@@ -206,7 +212,7 @@ return (
 
 <div>
     <h2>Products</h2>
-    <button onClick={() => setShowAddPopup(true)}>Add Product</button>
+    {/* <button onClick={() => setShowAddPopup(true)}>Add Product</button>
     <ProductsFilter onFilterChange={handleFilterChange} />
     <ProductsList
       products={products}
@@ -233,7 +239,7 @@ return (
         onConfirm={handleConfirmDeleteProduct}
         onCancel={() => setShowDeletePopup(false)}
       />
-    )}
+    )} */}
   </div>
 </div>
 );

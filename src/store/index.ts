@@ -1,16 +1,21 @@
 import { configureStore } from "@reduxjs/toolkit";
 import createSagaMiddleware from "redux-saga";
 import { useDispatch } from "react-redux";
-import counterReducer from "./counterSlice";
-import { counterSaga } from "./sagas";
+import counterReducer from "../counterSlice";
+import productsReducer from "./productsSlice";
+import authReducer from "../authSlice";
+import { counterSaga } from "../sagas";
 
 const sagaMiddleware = createSagaMiddleware();
 
 const store = configureStore({
   reducer: {
     counter: counterReducer,
+    auth: authReducer,
+    products: productsReducer,
   },
-  middleware: [sagaMiddleware],
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware().concat(sagaMiddleware)
 });
 
 sagaMiddleware.run(counterSaga);

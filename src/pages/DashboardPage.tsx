@@ -1,11 +1,11 @@
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { selectIsAuthenticated } from "../store/authSlice";
+import { useAppSelector } from '../hooks';
+import { selectUser } from "../authSlice";
 import { useRouter } from "next/router";
-import { ProductsList } from "../components/ProductsList";
+import ProductsList from "../components/ProductsList";
 
 const DashboardPage = () => {
-  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const isAuthenticated = useAppSelector(selectUser);
   const router = useRouter();
 
   useEffect(() => {
@@ -18,9 +18,9 @@ const DashboardPage = () => {
     <div>
       <h1>Dashboard</h1>
       <ProductsList
-        products={products}
-        onDeleteProduct={handleDeleteProduct}
-        onEditProduct={handleEditProduct}
+        // products={products}
+        // onDeleteProduct={handleDeleteProduct}
+        // onEditProduct={handleEditProduct}
         />
     </div>
   );

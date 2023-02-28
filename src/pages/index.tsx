@@ -1,14 +1,21 @@
-import { Route, Switch } from "react-router-dom";
-import { LoginPage, DashboardPage } from "../pages";
-import { PrivateRoute } from "../components/PrivateRoute";
+import { Route, Routes } from "react-router-dom";
+import LoginPage from "./LoginPage";
+import DashboardPage from "./DashboardPage";
+import { PrivateRoute, PrivateRouteProps } from "../components/PrivateRoute";
+import { useAppSelector } from '../hooks';
+
+const defaultPrivateRouteProps: Omit<PrivateRouteProps, 'outlet'> = {
+  isAuthenticated: true,//useAppSelector(state => state.auth),
+  authenticationPath: '/login',
+};
 
 const App = () => {
   return (
     <div>
-      <Switch>
-        <Route exact path="/" component={LoginPage} />
-        <PrivateRoute exact path="/dashboard" component={DashboardPage} />
-      </Switch>
+      <Routes>
+        <Route path="/" element={<DashboardPage />} />
+        <Route path='protected' element={<PrivateRoute {...defaultPrivateRouteProps} outlet={<DashboardPage />} />} />
+      </Routes>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "https://jsonplaceholder.typicode.com";
+const API_BASE_URL = "https://fakestoreapi.com/";
 
 export interface Post {
   userId: number;
@@ -10,6 +10,6 @@ export interface Post {
 }
 
 export async function fetchPosts(): Promise<Post[]> {
-  const response = await axios.get<Post[]>(`${API_BASE_URL}/posts`);
+  const response = await axios.get<Post[]>(`${API_BASE_URL}/products`);
   return response.data;
 }
