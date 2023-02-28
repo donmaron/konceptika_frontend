@@ -17,6 +17,8 @@ const [filterOptions, setFilterOptions] = useState({
   minPrice: "",
   maxPrice: "",
 });
+const [sortOption, setSortOption] = useState("");
+
 
 const filteredProducts = useMemo(() => {
     let filtered = products;
@@ -33,6 +35,19 @@ const filteredProducts = useMemo(() => {
     }
     return filtered;
   }, [products, searchTerm, filterOptions]);
+
+  const sortedProducts = useMemo(() => {
+    let sorted = filteredProducts;
+    if (sortOption === "name") {
+      sorted = sorted.sort((a, b) =>
+        a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+      );
+    } else if (sortOption === "price") {
+      sorted = sorted.sort((a, b) => a.price - b.price);
+    }
+    return sorted;
+  }, [filteredProducts, sortOption]);
+  
   
 
 const handleAddProduct = () => {
@@ -94,12 +109,21 @@ return (
     <option value="200">$200</option>
   </select>
 </div>
+<select
+  value={sortOption}
+  onChange={(e) => setSortOption(e.target.value)}
+>
+  <option value="">Sort by</option>
+  <option value="name">Name</option>
+  <option value="price">Price</option>
+</select>
+
 
 {isLoading && <div>Loading...</div>}
 {error && <div>{error}</div>}
 <button onClick={handleAddProduct}>Add Product</button>
 <ul>
-  {filteredProducts.map((product) => (
+  {sortedProducts.map((product) => (
     <li key={product.id}>
       {product.name} ({product.price})
       <button onClick={() => handleEditProduct(product)}>Edit</button>
@@ -107,6 +131,7 @@ return (
     </li>
   ))}
 </ul>
+
 
 {showAddForm && <PopupForm mode="add" onClose={handleCloseForms} />}
 {showEditForm && selectedProduct && <PopupForm mode="edit" product={selectedProduct} onClose={handleCloseForms} />}
