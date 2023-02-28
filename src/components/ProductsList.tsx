@@ -18,8 +18,11 @@ const [filterOptions, setFilterOptions] = useState({
   maxPrice: "",
 });
 const [sortOption, setSortOption] = useState("");
+const [currentPage, setCurrentPage] = useState(1);
+const [productsPerPage, setProductsPerPage] = useState(5);
 
-
+const indexOfLastProduct = currentPage * productsPerPage;
+const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
 const filteredProducts = useMemo(() => {
     let filtered = products;
     if (searchTerm) {
@@ -48,6 +51,11 @@ const filteredProducts = useMemo(() => {
     return sorted;
   }, [filteredProducts, sortOption]);
   
+const currentProducts = useMemo(() => {
+    return filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+  }, [filteredProducts, indexOfFirstProduct, indexOfLastProduct]);
+  
+
   
 
 const handleAddProduct = () => {
@@ -123,7 +131,7 @@ return (
 {error && <div>{error}</div>}
 <button onClick={handleAddProduct}>Add Product</button>
 <ul>
-  {sortedProducts.map((product) => (
+  {currentProducts.map((product) => (
     <li key={product.id}>
       {product.name} ({product.price})
       <button onClick={() => handleEditProduct(product)}>Edit</button>
@@ -133,11 +141,27 @@ return (
 </ul>
 
 
+
 {showAddForm && <PopupForm mode="add" onClose={handleCloseForms} />}
 {showEditForm && selectedProduct && <PopupForm mode="edit" product={selectedProduct} onClose={handleCloseForms} />}
 {showDeleteForm && selectedProduct && (
 <PopupForm mode="delete" product={selectedProduct} onClose={handleCloseForms} />
 )}
+<button onClick={() => setCurrentPage(currentPage - 1)}>Prev</button>
+<div>
+  Page {currentPage} of {Math.ceil(filteredProducts.length / productsPerPage)}
+</div>
+<button onClick={() => setCurrentPage(currentPage + 1)}>Next</button>
+
+<select
+  value={productsPerPage}
+  onChange={(e) => setProductsPerPage(Number(e.target.value))}
+>
+  <option value="5">5 per page</option>
+  <option value="10">10 per page</option>
+  <option value="20">20 per page</option>
+</select>
+
 </div>
 );
 };
