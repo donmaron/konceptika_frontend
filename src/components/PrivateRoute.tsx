@@ -50,20 +50,3 @@ export function PrivateRoute({isAuthenticated, authenticationPath, outlet}: Priv
 };
 
 export default PrivateRoute;
-
-// import { FC } from 'react';
-// import { useAppSelector } from '../hooks';
-// import { Navigate } from 'react-router-dom';
-
-// interface PropType {
-//     element: React.FC;
-// }
-
-// export const PrivateRoute: FC<PropType> = ({ element: Element }) => {
-//     const isAuthenticated = useAppSelector(state => state.auth);
-
-//     if (isAuthenticated) return <Element />;
-//     return <Navigate to='/' />;
-// };
-
-// export default PrivateRoute;
