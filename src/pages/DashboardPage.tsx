@@ -5,7 +5,8 @@ import { useRouter } from "next/router";
 import ProductsList from "../components/ProductsList";
 
 const DashboardPage = () => {
-  const isAuthenticated = useAppSelector(selectUser);
+  const user = useAppSelector(selectUser);
+  const isAuthenticated = user!==null;
   const router = useRouter();
 
   useEffect(() => {

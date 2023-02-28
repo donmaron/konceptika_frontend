@@ -21,6 +21,8 @@ export const authSlice = createSlice({
   reducers: {
     loginSuccess: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
+      console.log(action.payload)
+
     },
     logoutSuccess: (state) => {
       state.user = null;
@@ -35,7 +37,7 @@ export const login = (data: { email: string; password: string }) => async (
 ) => {
   try {
     const response = await axios.post("https://apingweb.com/api/login", data);
-    dispatch(loginSuccess(response.data));
+    dispatch(loginSuccess(response.data.result));
   } catch (error) {
     console.error(error);
   }

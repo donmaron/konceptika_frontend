@@ -16,9 +16,9 @@ function MyApp({ Component, pageProps }: AppProps) {
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         <GlobalStyles />
-          <StaticRouter>
-            <Component {...pageProps} />
-          </StaticRouter>
+        <StaticRouter location={""}>
+          <Component {...pageProps} />
+        </StaticRouter>
       </ThemeProvider>
     </Provider>
   );
