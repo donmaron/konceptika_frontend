@@ -1,10 +1,12 @@
-import { put, takeLatest } from "redux-saga/effects";
+import { put, takeLatest, call } from "redux-saga/effects";
 import { incrementAsync, incrementAsyncSuccess } from "./counterSlice";
+import { fetchPosts, Post } from "./api";
 
 function* handleIncrementAsync() {
-  // simulate an async request
-  yield new Promise((resolve) => setTimeout(resolve, 1000));
-  yield put(incrementAsyncSuccess());
+  // fetch posts from API
+  const posts: Post[] = yield call(fetchPosts);
+  // update state
+  yield put(incrementAsyncSuccess(posts.length));
 }
 
 export function* counterSaga() {
