@@ -54,7 +54,6 @@ const filteredProducts = useMemo(() => {
 const currentProducts = useMemo(() => {
     return filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
   }, [filteredProducts, indexOfFirstProduct, indexOfLastProduct]);
-  
 
   
 
@@ -63,21 +62,64 @@ setSelectedProduct(null);
 setShowAddForm(true);
 };
 
-const handleEditProduct = (product: { id: number; name: string; price: number }) => {
-setSelectedProduct(product);
-setShowEditForm(true);
-};
+const handleEditProduct = (product) => {
+    setEditedProduct(product);
+    setShowEditPopup(true);
+  };
 
-const handleDeleteProduct = (product: { id: number; name: string; price: number }) => {
-setSelectedProduct(product);
-setShowDeleteForm(true);
-};
+  const handleDeleteProduct = (product) => {
+    setDeletedProduct(product);
+    setShowDeletePopup(true);
+  };
+  
 
 const handleCloseForms = () => {
 setShowAddForm(false);
 setShowEditForm(false);
 setShowDeleteForm(false);
 };
+
+const Popup = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  > div {
+    background-color: white;
+    padding: 1rem;
+    border-radius: 5px;
+  }
+`;
+
+
+const ProductFormPopup = ({ product, onSubmit, onCancel }) => {
+    return (
+      <Popup>
+        <h2>Edit Product</h2>
+        <ProductForm product={product} onSubmit={onSubmit} onCancel={onCancel} />
+      </Popup>
+    );
+  };
+  
+  const ProductDeleteConfirmation = ({ product, onConfirm, onCancel }) => {
+    return (
+      <Popup>
+        <h2>Delete Product</h2>
+        <p>Are you sure you want to delete the product {product.name}?</p>
+        <button onClick={onConfirm}>Yes</button>
+        <button onClick={onCancel}>No</button>
+      </Popup>
+    );
+  };
+  
+  
+  
 
 return (
 <div>
@@ -162,6 +204,39 @@ return (
   <option value="20">20 per page</option>
 </select>
 
+<div>
+    <h2>Products</h2>
+    <button onClick={() => setShowAddPopup(true)}>Add Product</button>
+    <ProductsFilter onFilterChange={handleFilterChange} />
+    <ProductsList
+      products={products}
+      onDeleteProduct={handleDeleteProduct}
+      onEditProduct={handleEditProduct}
+    />
+    {showAddPopup && (
+      <ProductFormPopup
+        product={{ name: "", price: "" }}
+        onSubmit={handleAddProduct}
+        onCancel={() => setShowAddPopup(false)}
+      />
+    )}
+    {showEditPopup && (
+      <ProductFormPopup
+        product={editedProduct}
+        onSubmit={handleUpdateProduct}
+        onCancel={() => setShowEditPopup(false)}
+      />
+    )}
+    {showDeletePopup && (
+      <ProductDeleteConfirmation
+        product={deletedProduct}
+        onConfirm={handleConfirmDeleteProduct}
+        onCancel={() => setShowDeletePopup(false)}
+      />
+    )}
+  </div>
 </div>
 );
 };
+
+export default ProductsList;
