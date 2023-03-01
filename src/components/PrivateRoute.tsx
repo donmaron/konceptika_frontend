@@ -33,19 +33,20 @@
 //     }
 //   };
   
-import { Navigate, Route, RouteProps } from 'react-router-dom';
+import { useRouter } from "next/router";
 
 export type PrivateRouteProps = {
   isAuthenticated: boolean;
-  authenticationPath: string;
+  authenticationPath: JSX.Element;
   outlet: JSX.Element;
 };
 
 export function PrivateRoute({isAuthenticated, authenticationPath, outlet}: PrivateRouteProps) {
+    const router = useRouter();
   if(isAuthenticated) {
     return outlet;
   } else {
-    return <Navigate to={{ pathname: authenticationPath }} />;
+    return authenticationPath;
   }
 };
 

@@ -65,10 +65,8 @@
 
 // export default LoginPage;
 import { Route, Routes, useNavigate } from "react-router-dom";
-import { useRouter } from "next/router";
-import { useEffect } from 'react';
-import LoginPage from "./LoginPage";
 import DashboardPage from "./DashboardPage";
+import LoginPage from "../pages/LoginPage";
 import { PrivateRoute, PrivateRouteProps } from "../components/PrivateRoute";
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { selectUser } from "../authSlice";
@@ -76,21 +74,18 @@ import { Suspense } from "react";
 
 const App = () => {
 
-  const dispatch = useAppDispatch();
-  const router = useRouter();
   const user = useAppSelector(selectUser);
 
   const defaultPrivateRouteProps: Omit<PrivateRouteProps, 'outlet'> = {
     isAuthenticated: !!user,
-    authenticationPath: '/login',
+    authenticationPath: <LoginPage />,
   };
 
   return (
     <div>
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
-          <Route path="/" element={<LoginPage />} />
-          <Route path='/DashboardPage' element={<PrivateRoute {...defaultPrivateRouteProps} outlet={<DashboardPage />} />} />
+          <Route path='/' element={<PrivateRoute {...defaultPrivateRouteProps} outlet={<DashboardPage />} />} />
         </Routes>
       </Suspense>
     </div>

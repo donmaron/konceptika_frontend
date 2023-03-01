@@ -88,7 +88,7 @@ const LoginPage = () => {
   useEffect(() => {
     if (user) {
       // Redirect to dashboard if user is authenticated
-      router.push('/DashboardPage');
+      router.push('/');
     }
   }, [user]);
 
