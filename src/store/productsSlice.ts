@@ -8,6 +8,10 @@ interface Product {
   name: string;
   price: number;
   category_id: number;
+  category: {
+    id: number,
+    name: string
+  };
 }
 
 interface ProductsState {

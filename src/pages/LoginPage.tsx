@@ -80,7 +80,16 @@ import { useEffect } from "react";
 import { useRouter } from 'next/router';
 import { login } from "../authSlice";
 import { LoginForm } from "../components/LoginForm";
+import styled from "styled-components";
 
+const MainContainer = styled.div`
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  width:100vw;
+  height:100vh;
+  `;
+  
 const LoginPage = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
@@ -96,9 +105,9 @@ const LoginPage = () => {
   };
 
   return (
-    <div>
+    <MainContainer>
       <LoginForm onSubmit={onSubmit} />
-    </div>
+    </MainContainer>
   );
 };
 

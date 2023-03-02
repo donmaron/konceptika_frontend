@@ -8,11 +8,15 @@ import {
 } from "../store/productsSlice";
 import PopupForm from "./PopupForm";
 import styled from "styled-components";
+import { FaEdit, FaTrash, FaSearch, FaPlus } from 'react-icons/fa';
+
 
 const ProductsListContainer = styled.div`
   margin: 0 auto;
   padding: 1rem;
   background-color: #fff;
+  width: 100%;
+  max-width: 1415px;
 `;
 
 const SearchContainer = styled.div`
@@ -21,18 +25,18 @@ const SearchContainer = styled.div`
   margin-bottom: 1rem;
 `;
 
-const SearchInput = styled.input`
-  width: 40%;
-  padding: 0.5rem;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  font-size: 1rem;
-`;
+// const SearchInput = styled.input`
+//   width: 40%;
+//   padding: 0.5rem;
+//   border-radius: 5px;
+//   border: 1px solid #ccc;
+//   font-size: 1rem;
+// `;
 
 const SearchSelect = styled.select`
   width: 25%;
   padding: 0.5rem;
-  border-radius: 5px;
+  border-radius: 8px;
   border: 1px solid #ccc;
   font-size: 1rem;
   appearance: none;
@@ -49,18 +53,18 @@ const ProductList = styled.tbody`
   width: 100%;
 `;
 
-const ProductListItem = styled.tr`
-  // display: flex;
-  // justify-content: space-between;
-  // align-items: center;
-  padding: 10px;
-  margin-bottom: 10px;
-  background-color: "#f5f5f5";
+// const ProductListItem = styled.tr`
+//   // display: flex;
+//   // justify-content: space-between;
+//   // align-items: center;
+//   padding: 10px;
+//   margin-bottom: 10px;
+//   background-color: "#f5f5f5";
 
-  &:hover {
-    background-color: #e5e5e5;
-  }
-`;
+//   &:hover {
+//     background-color: #e5e5e5;
+//   }
+// `;
 
 const ProductName = styled.p`
   margin: 0;
@@ -74,18 +78,36 @@ const ProductPrice = styled.p`
   text-align: left;
 `;
 
-const PaginationContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 1rem;
-`;
+// const PaginationContainer = styled.div`
+//   display: flex;
+//   justify-content: center;
+//   margin-top: 1rem;
+// `;
 
-const PaginationButton = styled.button`
-  margin: 0 0.5rem;
-`;
+// const PaginationButton = styled.button`
+//   margin: 0 0.5rem;
+// `;
 
 const AddProductButton = styled.button`
-  margin: 0 0.5rem;
+  margin: 0 5px;
+  padding: 5px 10px;
+  background-color: #5B66DC;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  font-size: 1rem;
+  align-items: center;
+  > .plusIcon {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    margin-right: 0.5rem;
+  }
+  &:hover {
+  background-color: #5B66FF;
+  }
 `;
 
 const Popup = styled.div`
@@ -101,10 +123,113 @@ const Popup = styled.div`
 
   > div {
     background-color: white;
-    padding: 1rem;
-    border-radius: 5px;
+    padding: 2.5rem;
+    max-width: 350px;
+    width: 100%;
+    border-radius: 8px;
+    -webkit-box-shadow: 8px 0px 20px 3px rgb(66 68 90);
+    -moz-box-shadow: 8px 0px 20px 3px rgb(66 68 90);
+    box-shadow: 8px 0px 20px 3px rgb(66 68 90);
   }
 `;
+
+const Table = styled.table` width: 100%; border-spacing: 0; border: 1px solid #E9EAEF; border-radius: 16px; overflow:hidden;`;
+
+const TableHead = styled.thead` background-color: #FAFBFE;`;
+
+const TableRow = styled.tr`
+border-bottom: 1px solid #ccc;
+
+&:last-child {
+border-bottom: none;
+}
+`;
+
+const TableHeaderCell = styled.td` padding: 10px; font-weight: bold;`;
+
+const ProductListItem = styled.tr`
+border-bottom: 1px solid black;
+border-top: 1px solid black;
+border-collapse: collapse;`;
+
+const ProductCell = styled.td` padding: 10px;`;
+
+const Button = styled.button`
+margin: 0 5px;
+padding: 5px 10px;
+background-color: #4caf50;
+color: #fff;
+border: none;
+border-radius: 4px;
+cursor: pointer;
+
+&:hover {
+background-color: #3e8e41;
+}
+`;
+
+const ProductActions = styled.td` display: flex; align-items: center; justify-content: center;`;
+
+const PaginationContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1rem;
+`;
+
+const PaginationButton = styled.button`
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  margin: 0 0.5rem;
+  cursor: pointer;
+
+  &:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+`;
+
+const IconButton = styled.button`
+  border: none;
+  background: none;
+  color: #D8DBE4;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 0.5rem;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #636EDE;
+  }
+`;
+
+const SearchBar = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  background-color: #f2f2f2;
+  border-radius: 4px;
+`;
+
+const SearchIcon = styled.span`
+  padding: 10px;
+`;
+
+const SearchInput = styled.input`
+  flex: 1;
+  border: none;
+  margin-left: 0.5rem;
+  font-size: 1rem;
+  color: #333;
+  background-color: transparent;
+  &:focus {
+    outline: none;
+  }
+`;
+
 
 const ProductsList = () => {
   const dispatch = useAppDispatch();
@@ -195,12 +320,17 @@ const ProductsList = () => {
   return (
     <ProductsListContainer>
       <SearchContainer>
-        <SearchInput
-          type="text"
-          placeholder=""
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+        <SearchBar>
+          <SearchIcon>
+            <FaSearch />
+          </SearchIcon>
+          <SearchInput
+            type="text"
+            placeholder=""
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </SearchBar>
         {/* <SearchSelect
           value={filterOptions.minPrice}
           onChange={(e) =>
@@ -238,52 +368,52 @@ const ProductsList = () => {
           <option value="price">Cenie</option>
         </SearchSelect>
         <AddProductButton onClick={handleAddProduct}>
-          Dodaj produkt
+        <FaPlus className="plusIcon"/>Dodaj produkt
         </AddProductButton>
       </SearchContainer>
 
       {isLoading && <div>Ładowanie...</div>}
       {error && <div>{error}</div>}
-      <table>
-        <thead>
-          <tr>
+      <Table>
+        <TableHead>
+          <TableRow>
             {/* <ProductListItem> */}
 
-            <td>UUID</td>
-            <td>Nazwa</td>
-            <td>Cena</td>
-            <td>Kategoria</td>
-            <td></td>
+            <TableHeaderCell>UUID</TableHeaderCell>
+            <TableHeaderCell>Nazwa</TableHeaderCell>
+            <TableHeaderCell>Cena</TableHeaderCell>
+            <TableHeaderCell>Kategoria</TableHeaderCell>
+            <TableHeaderCell></TableHeaderCell>
             {/* </ProductListItem> */}
-          </tr>
-        </thead>
+          </TableRow>
+        </TableHead>
         <ProductList>
           {currentProducts.map((product) => (
             <ProductListItem key={product.uuid}>
-              <td>
+              <ProductCell>
                 <ProductName>{product.uuid}</ProductName>
-              </td>
-              <td>
+              </ProductCell>
+              <ProductCell>
                 <ProductName>{product.name}</ProductName>
-              </td>
-              <td>
+              </ProductCell>
+              <ProductCell>
                 <ProductPrice>{product.price}</ProductPrice>
-              </td>
-              <td>
-                <ProductPrice>{product.category_id}</ProductPrice>
-              </td>
-              <td>
-                <button onClick={() => handleEditProduct(product)}>
-                  Edytuj
-                </button>
-                <button onClick={() => handleDeleteProduct(product)}>
-                  Usuń
-                </button>
-              </td>
+              </ProductCell>
+              <ProductCell>
+                <ProductPrice>{product.category.name}</ProductPrice>
+              </ProductCell>
+              <ProductActions>
+              <IconButton onClick={() => handleEditProduct(product)}>
+                <FaEdit />
+              </IconButton>
+              <IconButton onClick={() => handleDeleteProduct(product)}>
+                <FaTrash />
+              </IconButton>
+              </ProductActions>
             </ProductListItem>
           ))}
         </ProductList>
-      </table>
+      </Table>
       {(showAddForm || showEditForm || showDeleteForm) && (
         <Popup>
           {showAddForm && <PopupForm mode="add" onClose={handleCloseForms} />}
@@ -314,7 +444,7 @@ const ProductsList = () => {
         {Math.ceil(filteredProducts.length / productsPerPage)}
         <PaginationButton
           onClick={() => setCurrentPage(currentPage + 1)}
-          disabled={currentPage > filteredProducts.length / productsPerPage}
+          disabled={currentPage >= filteredProducts.length / productsPerPage}
         >
           {`>>`}
         </PaginationButton>
