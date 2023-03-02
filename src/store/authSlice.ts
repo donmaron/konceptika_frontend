@@ -36,7 +36,7 @@ export const login =
   async (dispatch: AppDispatch) => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/login",
+        "http://km-rekrutacja.atwebpages.com/api/login",
         data
       );
       localStorage.setItem("token", JSON.stringify(response.data.token));
