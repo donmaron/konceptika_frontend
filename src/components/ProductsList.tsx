@@ -8,8 +8,14 @@ import {
 } from "../store/productsSlice";
 import PopupForm from "./PopupForm";
 import styled from "styled-components";
-import { FiEdit, FiTrash, FiSearch, FiPlus } from 'react-icons/fi';
-
+import {
+  FiEdit,
+  FiTrash,
+  FiSearch,
+  FiPlus,
+  FiChevronRight,
+  FiChevronLeft,
+} from "react-icons/fi";
 
 const ProductsListContainer = styled.div`
   margin: 0 auto;
@@ -23,17 +29,17 @@ const SearchContainer = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 40px;
-  max-height:45px;
+  max-height: 45px;
 `;
 
 const SearchSelect = styled.select`
   width: 25%;
   padding: 0.5rem;
   border-radius: 12px;
-  border: 1px solid #ccc;
+  border: 1px solid #b4bacc;
   font-size: 1rem;
   appearance: none;
-  background-color: #fff;
+  background-color: #fafbfe;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%23333' d='M17.4 8.6c-.4-.4-1-.4-1.4 0L12 12.2 7 7.2c-.4-.4-1-.4-1.4 0-.4.4-.4 1 0 1.4l5 5c.4.4 1 .4 1.4 0l5-5c.4-.4.4-1 0-1.4z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 0.5rem center;
@@ -61,7 +67,7 @@ const ProductPrice = styled.p`
 const AddProductButton = styled.button`
   margin: 0 5px;
   padding: 16px 20px;
-  background-color: #5B66DC;
+  background-color: #5b66dc;
   color: #fff;
   border: none;
   border-radius: 12px;
@@ -76,7 +82,7 @@ const AddProductButton = styled.button`
     margin-right: 1rem;
   }
   &:hover {
-  background-color: #5B66FF;
+    background-color: #5b66ff;
   }
 `;
 
@@ -103,45 +109,59 @@ const Popup = styled.div`
   }
 `;
 
-const Table = styled.table` width: 100%; border-spacing: 0; border: 1px solid #E9EAEF; border-radius: 12px; overflow:hidden;`;
+const Table = styled.table`
+  width: 100%;
+  border-spacing: 0;
+  border: 1px solid #e9eaef;
+  border-radius: 12px;
+  overflow: hidden;
+`;
 
-const TableHead = styled.thead` background-color: #FAFBFE;`;
+const TableHead = styled.thead`
+  background-color: #fafbfe;
+`;
 
 const TableRow = styled.tr`
-border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
 
-> td{
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
-  &:first-child {
-  padding-left:1.5rem;
+  > td {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    &:first-child {
+      padding-left: 1.5rem;
+    }
   }
-}
 `;
 
-const TableHeaderCell = styled.td` padding: 10px; font-weight: bold;`;
+const TableHeaderCell = styled.td`
+  padding: 10px;
+  font-weight: bold;
+`;
 
 const ProductListItem = styled.tr`
-border-bottom: 1px solid black;
-border-top: 1px solid black;
-border-collapse: collapse;
-
+  border-bottom: 1px solid black;
+  border-top: 1px solid black;
+  border-collapse: collapse;
 `;
 
-const ProductCell = styled.td` &:first-child{ padding: 1rem; }`;
+const ProductCell = styled.td`
+  &:first-child {
+    padding: 1rem;
+  }
+`;
 
 const Button = styled.button`
-margin: 0 5px;
-padding: 5px 10px;
-background-color: #4caf50;
-color: #fff;
-border: none;
-border-radius: 12px;
-cursor: pointer;
+  margin: 0 5px;
+  padding: 5px 10px;
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
 
-&:hover {
-background-color: #3e8e41;
-}
+  &:hover {
+    background-color: #3e8e41;
+  }
 `;
 
 const ProductActions = styled.td``;
@@ -154,19 +174,20 @@ const PaginationContainer = styled.div`
 `;
 
 const PaginationButton = styled.button`
-  background-color: #5B66DC;
-  color: #fff;
+  display: flex;
+  font-weight: bold;
+  background-color: transparent;
+  color: #5b66dc;
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 0.75rem;
   margin: 0 0.5rem;
   cursor: pointer;
 
   &:hover {
-    background-color: #5B66FF;
+    color: #5b66ff;
   }
   &:disabled {
-    background-color: #ccc;
+    background-color: transparent;
+    color: #ccc;
     cursor: not-allowed;
   }
 `;
@@ -174,14 +195,14 @@ const PaginationButton = styled.button`
 const IconButton = styled.button`
   border: none;
   background: none;
-  color: #D8DBE4;
+  color: #d8dbe4;
   cursor: pointer;
   font-size: 1.2rem;
   padding: 0.5rem;
   transition: color 0.2s;
 
   &:hover {
-    color: #636EDE;
+    color: #636ede;
   }
 `;
 
@@ -189,13 +210,13 @@ const SearchBar = styled.div`
   display: flex;
   align-items: center;
   padding: 0.5rem;
-  background-color: #FAFBFE;
+  background-color: #fafbfe;
   border-radius: 12px;
-  border: 1px solid #B4BACC;
-  max-width:300px;
-  width:100%;
+  border: 1px solid #b4bacc;
+  max-width: 300px;
+  width: 100%;
   > .icon {
-    color: #A2A8BE;
+    color: #a2a8be;
   }
 `;
 
@@ -216,7 +237,6 @@ const SearchInput = styled.input`
     outline: none;
   }
 `;
-
 
 const ProductsList = () => {
   const dispatch = useAppDispatch();
@@ -268,20 +288,22 @@ const ProductsList = () => {
   }, [products, searchTerm, filterOptions]);
 
   const sortedProducts = useMemo(() => {
-    let sorted = filteredProducts;
+    let sorted = [...filteredProducts];
     if (sortOption === "name") {
       sorted = sorted.sort((a, b) =>
         a.name.toLowerCase().localeCompare(b.name.toLowerCase())
       );
     } else if (sortOption === "price") {
       sorted = sorted.sort((a, b) => a.price - b.price);
+    } else if (sortOption === "category") {
+      sorted = sorted.sort((a, b) => a.category_id - b.category_id);
     }
     return sorted;
   }, [filteredProducts, sortOption]);
 
   const currentProducts = useMemo(() => {
-    return filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
-  }, [filteredProducts, indexOfFirstProduct, indexOfLastProduct]);
+    return sortedProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+  }, [sortedProducts, indexOfFirstProduct, indexOfLastProduct]);
 
   const handleAddProduct = () => {
     setSelectedProduct(null);
@@ -327,10 +349,10 @@ const ProductsList = () => {
             })
           }
         >
-          <option value="">Min price</option>
+          <option value="">Cena min</option>
           <option value="10">10</option>
           <option value="20">20</option>
-          <option value="50">$0</option>
+          <option value="50">50</option>
         </SearchSelect>
         <SearchSelect
           value={filterOptions.maxPrice}
@@ -341,7 +363,7 @@ const ProductsList = () => {
             })
           }
         >
-          <option value="">Max price</option>
+          <option value="">Cena max</option>
           <option value="50">50</option>
           <option value="100">100</option>
           <option value="200">200</option>
@@ -350,12 +372,14 @@ const ProductsList = () => {
           value={sortOption}
           onChange={(e) => setSortOption(e.target.value)}
         >
-          <option value="">Sortuj po</option>
-          <option value="name">Nazwie</option>
-          <option value="price">Cenie</option>
+          <option value="" disabled>Sortuj</option>
+          <option value="name">Nazwa</option>
+          <option value="price">Cena</option>
+          <option value="category">Kategoria</option>
         </SearchSelect>
         <AddProductButton onClick={handleAddProduct}>
-        <FiPlus className="plusIcon"/>Dodaj produkt
+          <FiPlus className="plusIcon" />
+          Dodaj produkt
         </AddProductButton>
       </SearchContainer>
 
@@ -390,12 +414,12 @@ const ProductsList = () => {
                 <ProductPrice>{product.category.name}</ProductPrice>
               </ProductCell>
               <ProductActions>
-              <IconButton onClick={() => handleEditProduct(product)}>
-                <FiEdit />
-              </IconButton>
-              <IconButton onClick={() => handleDeleteProduct(product)}>
-                <FiTrash />
-              </IconButton>
+                <IconButton onClick={() => handleEditProduct(product)}>
+                  <FiEdit />
+                </IconButton>
+                <IconButton onClick={() => handleDeleteProduct(product)}>
+                  <FiTrash />
+                </IconButton>
               </ProductActions>
             </ProductListItem>
           ))}
@@ -421,22 +445,6 @@ const ProductsList = () => {
         </Popup>
       )}
       <PaginationContainer>
-        <PaginationButton
-          onClick={() => setCurrentPage(currentPage - 1)}
-          disabled={currentPage == 1}
-        >
-          {`<<`}
-        </PaginationButton>
-        Strona {currentPage} z{" "}
-        {Math.ceil(filteredProducts.length / productsPerPage)}
-        <PaginationButton
-          onClick={() => setCurrentPage(currentPage + 1)}
-          disabled={currentPage >= filteredProducts.length / productsPerPage}
-        >
-          {`>>`}
-        </PaginationButton>
-      </PaginationContainer>
-      <PaginationContainer>
         <SearchSelect
           value={productsPerPage}
           onChange={(e) => setProductsPerPage(Number(e.target.value))}
@@ -445,6 +453,22 @@ const ProductsList = () => {
           <option value="10">10 na stronę</option>
           <option value="20">20 na stronę</option>
         </SearchSelect>
+      </PaginationContainer>
+      <PaginationContainer>
+        <PaginationButton
+          onClick={() => setCurrentPage(currentPage - 1)}
+          disabled={currentPage == 1}
+        >
+          <FiChevronLeft />
+        </PaginationButton>
+        Strona {currentPage} z{" "}
+        {Math.ceil(sortedProducts.length / productsPerPage)}
+        <PaginationButton
+          onClick={() => setCurrentPage(currentPage + 1)}
+          disabled={currentPage >= sortedProducts.length / productsPerPage}
+        >
+          <FiChevronRight />
+        </PaginationButton>
       </PaginationContainer>
     </ProductsListContainer>
   );
