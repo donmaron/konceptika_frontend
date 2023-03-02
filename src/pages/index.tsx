@@ -69,18 +69,25 @@ import DashboardPage from "./DashboardPage";
 import LoginPage from "../pages/LoginPage";
 import { PrivateRoute, PrivateRouteProps } from "../components/PrivateRoute";
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { selectUser } from "../authSlice";
+import { selectUser, checkLoggedIn } from "../authSlice";
 import { Suspense } from "react";
+import { useEffect } from "react";
+
 
 const App = () => {
 
-  const user = useAppSelector(selectUser);
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(selectUser);  
+
+  if(!user){
+    dispatch(checkLoggedIn());
+  }
 
   const defaultPrivateRouteProps: Omit<PrivateRouteProps, 'outlet'> = {
     isAuthenticated: !!user,
     authenticationPath: <LoginPage />,
   };
-
+  
   return (
     <div>
       <Suspense fallback={<div>Loading...</div>}>

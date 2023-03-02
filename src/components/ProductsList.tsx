@@ -1,35 +1,139 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, SetStateAction } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks";
-import { fetchProducts, selectProducts, selectProductsLoading, selectProductsError } from "../store/productsSlice";
+import {
+  fetchProducts,
+  selectProducts,
+  selectProductsLoading,
+  selectProductsError,
+} from "../store/productsSlice";
 import PopupForm from "./PopupForm";
-import styled from 'styled-components';
-import ProductForm from "./ProductForm";
+import styled from "styled-components";
+
+const ProductsListContainer = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem;
+  background-color: #fff;
+`;
+
+const SearchContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+`;
+
+const SearchInput = styled.input`
+  width: 40%;
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+`;
+
+const SearchSelect = styled.select`
+  width: 25%;
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  appearance: none;
+  background-color: #fff;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%23333' d='M17.4 8.6c-.4-.4-1-.4-1.4 0L12 12.2 7 7.2c-.4-.4-1-.4-1.4 0-.4.4-.4 1 0 1.4l5 5c.4.4 1 .4 1.4 0l5-5c.4-.4.4-1 0-1.4z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  background-size: 1rem auto;
+`;
+
+const ProductList = styled.ul`
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+`;
+
+const ProductListItem = styled.li`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: "#f5f5f5";
+
+  &:hover {
+    background-color: #e5e5e5;
+  }
+`;
+
+const ProductName = styled.h2`
+  margin: 0;
+  padding: 0.5rem;
+  text-align: center;
+`;
+
+const ProductPrice = styled.p`
+  margin: 0;
+  padding: 0.5rem;
+  text-align: center;
+`;
+
+const PaginationContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+`;
+
+const PaginationButton = styled.button`
+  margin: 0 0.5rem;
+`;
+
+const Popup = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  > div {
+    background-color: white;
+    padding: 1rem;
+    border-radius: 5px;
+  }
+`;
 
 const ProductsList = () => {
-    const dispatch = useAppDispatch();
-    useEffect(() => {
-            dispatch(fetchProducts())
-      }, []);
-  
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, []);
+
   const products = useAppSelector(selectProducts);
   const isLoading = useAppSelector(selectProductsLoading);
   const error = useAppSelector(selectProductsError);
-const [selectedProduct, setSelectedProduct] = useState<{ id: number; name: string; price: number } | null>(null);
-const [showAddForm, setShowAddForm] = useState(false);
-const [showEditForm, setShowEditForm] = useState(false);
-const [showDeleteForm, setShowDeleteForm] = useState(false);
-const [searchTerm, setSearchTerm] = useState("");
-const [filterOptions, setFilterOptions] = useState({
-  minPrice: "",
-  maxPrice: "",
-});
-const [sortOption, setSortOption] = useState("");
-const [currentPage, setCurrentPage] = useState(1);
-const [productsPerPage, setProductsPerPage] = useState(5);
+  const [selectedProduct, setSelectedProduct] = useState<{
+    uuid: string;
+    name: string;
+    price: number;
+    category_id: number;
+  } | null>(null);
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [showEditForm, setShowEditForm] = useState(false);
+  const [showDeleteForm, setShowDeleteForm] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterOptions, setFilterOptions] = useState({
+    minPrice: "",
+    maxPrice: "",
+  });
+  const [sortOption, setSortOption] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [productsPerPage, setProductsPerPage] = useState(5);
 
-const indexOfLastProduct = currentPage * productsPerPage;
-const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-const filteredProducts = useMemo(() => {
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const filteredProducts = useMemo(() => {
     let filtered = products;
     if (searchTerm) {
       filtered = filtered.filter((p) =>
@@ -37,10 +141,14 @@ const filteredProducts = useMemo(() => {
       );
     }
     if (filterOptions.minPrice) {
-      filtered = filtered.filter((p) => p.price >= Number(filterOptions.minPrice));
+      filtered = filtered.filter(
+        (p) => p.price >= Number(filterOptions.minPrice)
+      );
     }
     if (filterOptions.maxPrice) {
-      filtered = filtered.filter((p) => p.price <= Number(filterOptions.maxPrice));
+      filtered = filtered.filter(
+        (p) => p.price <= Number(filterOptions.maxPrice)
+      );
     }
     return filtered;
   }, [products, searchTerm, filterOptions]);
@@ -56,193 +164,132 @@ const filteredProducts = useMemo(() => {
     }
     return sorted;
   }, [filteredProducts, sortOption]);
-  
-const currentProducts = useMemo(() => {
+
+  const currentProducts = useMemo(() => {
     return filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
   }, [filteredProducts, indexOfFirstProduct, indexOfLastProduct]);
 
-  
+  const handleAddProduct = () => {
+    setSelectedProduct(null);
+    setShowAddForm(true);
+  };
 
-// const handleAddProduct = () => {
-// setSelectedProduct(null);
-// setShowAddForm(true);
-// };
+  const handleEditProduct = (product: any) => {
+    setSelectedProduct(product);
+    setShowEditForm(true);
+  };
 
-// const handleEditProduct = (product) => {
-//     setEditedProduct(product);
-//     setShowEditPopup(true);
-//   };
+  const handleDeleteProduct = (product: any) => {
+    setSelectedProduct(product);
+    setShowDeleteForm(true);
+  };
 
-//   const handleDeleteProduct = (product) => {
-//     setDeletedProduct(product);
-//     setShowDeletePopup(true);
-//   };
-  
+  const handleCloseForms = () => {
+    setShowAddForm(false);
+    setShowEditForm(false);
+    setShowDeleteForm(false);
+  };
 
-// const handleCloseForms = () => {
-// setShowAddForm(false);
-// setShowEditForm(false);
-// setShowDeleteForm(false);
-// };
+  return (
+    <ProductsListContainer>
+      <SearchContainer>
+        <SearchInput
+          type="text"
+          placeholder="Search by name"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <SearchSelect
+          value={filterOptions.minPrice}
+          onChange={(e) =>
+            setFilterOptions({
+              ...filterOptions,
+              minPrice: e.target.value,
+            })
+          }
+        >
+          <option value="">Min price</option>
+          <option value="10">$10</option>
+          <option value="20">$20</option>
+          <option value="50">$50</option>
+        </SearchSelect>
+        <SearchSelect
+          value={filterOptions.maxPrice}
+          onChange={(e) =>
+            setFilterOptions({
+              ...filterOptions,
+              maxPrice: e.target.value,
+            })
+          }
+        >
+          <option value="">Max price</option>
+          <option value="50">$50</option>
+          <option value="100">$100</option>
+          <option value="200">$200</option>
+        </SearchSelect>
+        <SearchSelect
+          value={sortOption}
+          onChange={(e) => setSortOption(e.target.value)}
+        >
+          <option value="">Sort by</option>
+          <option value="name">Name</option>
+          <option value="price">Price</option>
+        </SearchSelect>
+      </SearchContainer>
 
-// const Popup = styled.div`
-//   position: fixed;
-//   top: 0;
-//   left: 0;
-//   width: 100%;
-//   height: 100%;
-//   background-color: rgba(0, 0, 0, 0.5);
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-
-//   > div {
-//     background-color: white;
-//     padding: 1rem;
-//     border-radius: 5px;
-//   }
-// `;
-
-
-// const ProductFormPopup = ({ product, onSubmit, onCancel }) => {
-//     return (
-//       <Popup>
-//         <h2>Edit Product</h2>
-//         <ProductForm product={product} onSubmit={onSubmit} onCancel={onCancel} />
-//       </Popup>
-//     );
-//   };
-  
-//   const ProductDeleteConfirmation = ({ product, onConfirm, onCancel }) => {
-//     return (
-//       <Popup>
-//         <h2>Delete Product</h2>
-//         <p>Are you sure you want to delete the product {product.name}?</p>
-//         <button onClick={onConfirm}>Yes</button>
-//         <button onClick={onCancel}>No</button>
-//       </Popup>
-//     );
-//   };
-  
-  
-  
-
-return (
-<div>
-<div>
-  <input
-    type="text"
-    placeholder="Search by name"
-    value={searchTerm}
-    onChange={(e) => setSearchTerm(e.target.value)}
-  />
-  <select
-    value={filterOptions.minPrice}
-    onChange={(e) =>
-      setFilterOptions({
-        ...filterOptions,
-        minPrice: e.target.value,
-      })
-    }
-  >
-    <option value="">Min price</option>
-    <option value="10">$10</option>
-    <option value="20">$20</option>
-    <option value="50">$50</option>
-  </select>
-  <select
-    value={filterOptions.maxPrice}
-    onChange={(e) =>
-      setFilterOptions({
-        ...filterOptions,
-        maxPrice: e.target.value,
-      })
-    }
-  >
-    <option value="">Max price</option>
-    <option value="50">$50</option>
-    <option value="100">$100</option>
-    <option value="200">$200</option>
-  </select>
-</div>
-<select
-  value={sortOption}
-  onChange={(e) => setSortOption(e.target.value)}
->
-  <option value="">Sort by</option>
-  <option value="name">Name</option>
-  <option value="price">Price</option>
-</select>
-
-
-{isLoading && <div>Loading...</div>}
-{error && <div>{error}</div>}
-{/* <button onClick={handleAddProduct}>Add Product</button> */}
-<ul>
-  {currentProducts.map((product) => (
-    <li key={product.id}>
-      {product.name} ({product.price})
-      {/* <button onClick={() => handleEditProduct(product)}>Edit</button>
-      <button onClick={() => handleDeleteProduct(product)}>Delete</button> */}
-    </li>
-  ))}
-</ul>
-
-
-
-{/* {showAddForm && <PopupForm mode="add" onClose={handleCloseForms} />}
-{showEditForm && selectedProduct && <PopupForm mode="edit" product={selectedProduct} onClose={handleCloseForms} />}
-{showDeleteForm && selectedProduct && (
-<PopupForm mode="delete" product={selectedProduct} onClose={handleCloseForms} />
-)} */}
-<button onClick={() => setCurrentPage(currentPage - 1)}>Prev</button>
-<div>
-  Page {currentPage} of {Math.ceil(filteredProducts.length / productsPerPage)}
-</div>
-<button onClick={() => setCurrentPage(currentPage + 1)}>Next</button>
-
-<select
-  value={productsPerPage}
-  onChange={(e) => setProductsPerPage(Number(e.target.value))}
->
-  <option value="5">5 per page</option>
-  <option value="10">10 per page</option>
-  <option value="20">20 per page</option>
-</select>
-
-<div>
-    <h2>Products</h2>
-    {/* <button onClick={() => setShowAddPopup(true)}>Add Product</button>
-    <ProductsFilter onFilterChange={handleFilterChange} />
-    <ProductsList
-      products={products}
-      onDeleteProduct={handleDeleteProduct}
-      onEditProduct={handleEditProduct}
-    />
-    {showAddPopup && (
-      <ProductFormPopup
-        product={{ name: "", price: "" }}
-        onSubmit={handleAddProduct}
-        onCancel={() => setShowAddPopup(false)}
-      />
-    )}
-    {showEditPopup && (
-      <ProductFormPopup
-        product={editedProduct}
-        onSubmit={handleUpdateProduct}
-        onCancel={() => setShowEditPopup(false)}
-      />
-    )}
-    {showDeletePopup && (
-      <ProductDeleteConfirmation
-        product={deletedProduct}
-        onConfirm={handleConfirmDeleteProduct}
-        onCancel={() => setShowDeletePopup(false)}
-      />
-    )} */}
-  </div>
-</div>
-);
+      {isLoading && <div>Loading...</div>}
+      {error && <div>{error}</div>}
+      <button onClick={handleAddProduct}>Add Product</button>
+      <ProductList>
+        {currentProducts.map((product) => (
+          <ProductListItem key={product.uuid}>
+            <ProductName>{product.name}</ProductName>
+            <ProductPrice>{product.price}</ProductPrice>
+            <button onClick={() => handleEditProduct(product)}>Edit</button>
+            <button onClick={() => handleDeleteProduct(product)}>Delete</button>
+          </ProductListItem>
+        ))}
+      </ProductList>
+      { ( showAddForm || showEditForm || showDeleteForm ) && <Popup>
+        {showAddForm && <PopupForm mode="add" onClose={handleCloseForms} />}
+        {showEditForm && selectedProduct && (
+          <PopupForm
+            mode="edit"
+            product={selectedProduct}
+            onClose={handleCloseForms}
+          />
+        )}
+        {showDeleteForm && selectedProduct && (
+          <PopupForm
+            mode="delete"
+            product={selectedProduct}
+            onClose={handleCloseForms}
+          />
+        )}
+      </Popup> }
+      <PaginationContainer>
+        <PaginationButton onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage == 1 }>
+          Prev
+        </PaginationButton>
+        Page {currentPage} of{" "}
+        {Math.ceil(filteredProducts.length / productsPerPage)}
+        <PaginationButton onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage > filteredProducts.length / productsPerPage}>
+          Next
+        </PaginationButton>
+        <SearchSelect
+          value={productsPerPage}
+          onChange={(e) => setProductsPerPage(Number(e.target.value))}
+        >
+          <option value="5">5 per page</option>
+          <option value="10">10 per page</option>
+          <option value="20">20 per page</option>
+        </SearchSelect>
+      </PaginationContainer>
+      <div>
+        <h2>Products</h2>
+      </div>
+    </ProductsListContainer>
+  );
 };
 
 export default ProductsList;

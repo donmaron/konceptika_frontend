@@ -4,13 +4,15 @@ import * as Yup from "yup";
 import axios from "axios";
 import { useAppSelector, useAppDispatch } from '../hooks'
 import { fetchProducts } from "../store/productsSlice";
+import axiosInstance from "../axiosInstance";
 
 interface PopupFormProps {
   mode: "add" | "edit" | "delete";
   product?: {
-    id: number;
+    uuid: string;
     name: string;
     price: number;
+    category_id: number;
   };
   onClose: () => void;
 }
@@ -23,6 +25,7 @@ const PopupForm = ({ mode, product, onClose }: PopupFormProps) => {
     initialValues: {
       name: product?.name ?? "",
       price: product?.price ?? "",
+      category_id: product?.category_id ?? "",
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Required"),
@@ -33,13 +36,13 @@ const PopupForm = ({ mode, product, onClose }: PopupFormProps) => {
       try {
         switch (mode) {
           case "add":
-            await axios.post("/api/products", values);
+            await axiosInstance.post("/products/add", values);
             break;
           case "edit":
-            await axios.put(`/api/products/${product?.id}`, values);
+            await axiosInstance.put(`/products/edit/${product?.uuid}`, values);
             break;
           case "delete":
-            await axios.delete(`/api/products/${product?.id}`);
+            await axiosInstance.delete(`/products/delete/${product?.uuid}`);
             break;
         }
         onClose();
@@ -64,6 +67,11 @@ const PopupForm = ({ mode, product, onClose }: PopupFormProps) => {
           <label htmlFor="price">Price</label>
           <input type="number" id="price" name="price" value={formik.values.price} onChange={formik.handleChange} />
           {formik.touched.price && formik.errors.price ? <div>{formik.errors.price}</div> : null}
+        </div>
+        <div>
+          <label htmlFor="price">Category</label>
+          <input type="number" id="category_id" name="category_id" value={formik.values.category_id} onChange={formik.handleChange} />
+          {formik.touched.category_id && formik.errors.category_id ? <div>{formik.errors.category_id}</div> : null}
         </div>
         <button type="submit" disabled={formik.isSubmitting}>
           {mode === "delete" ? "Delete" : "Save"}
