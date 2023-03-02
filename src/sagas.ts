@@ -3,9 +3,7 @@ import { increment, incrementByAmount } from "./counterSlice";
 import { fetchPosts, Post } from "./api";
 
 function* handleIncrementAsync() {
-  // fetch posts from API
   const posts: Post[] = yield call(fetchPosts);
-  // update state
   yield put(incrementByAmount(posts.length));
 }
 

@@ -23,7 +23,6 @@ export const authSlice = createSlice({
   reducers: {
     loginSuccess: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
-      console.log(action.payload);
     },
     logoutSuccess: (state) => {
       state.user = null;
@@ -56,28 +55,6 @@ export const logout = () => async (dispatch: AppDispatch) => {
     console.error(error);
   }
 };
-
-// export const checkLoggedIn = () => async (dispatch: AppDispatch) => {
-//   try {
-//     const user = JSON.parse(localStorage.getItem('user') || '');
-//     if (user) {
-//       dispatch(loginSuccess(user));
-//     }
-//   } catch (error) {
-//     console.error(error);
-//   }
-// };
-
-// export const checkLoggedIn = () => async (
-//   dispatch: AppDispatch
-// ) => {
-//   try {
-//     const response = await axiosInstance.get("/me");
-//     dispatch(loginSuccess(response.data.user));
-//   } catch (error) {
-//     console.error(error);
-//   }
-// };
 
 export const checkLoggedIn = () => async (dispatch: AppDispatch) => {
   try {

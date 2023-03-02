@@ -29,7 +29,7 @@ const Label = styled.label`
 const Input = styled(Field)`
   padding: 10px;
   border: 1px solid #ccc;
-  border-radius: 8px;
+  border-radius: 12px;
 `;
 
 const Error = styled(ErrorMessage)`
@@ -42,7 +42,7 @@ const Button = styled.button`
   background-color: #5B66DC;
   color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   cursor: pointer;
   width:100%;
 

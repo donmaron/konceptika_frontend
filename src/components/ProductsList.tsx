@@ -8,7 +8,7 @@ import {
 } from "../store/productsSlice";
 import PopupForm from "./PopupForm";
 import styled from "styled-components";
-import { FaEdit, FaTrash, FaSearch, FaPlus } from 'react-icons/fa';
+import { FiEdit, FiTrash, FiSearch, FiPlus } from 'react-icons/fi';
 
 
 const ProductsListContainer = styled.div`
@@ -22,21 +22,14 @@ const ProductsListContainer = styled.div`
 const SearchContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-bottom: 1rem;
+  margin-bottom: 40px;
+  max-height:45px;
 `;
-
-// const SearchInput = styled.input`
-//   width: 40%;
-//   padding: 0.5rem;
-//   border-radius: 5px;
-//   border: 1px solid #ccc;
-//   font-size: 1rem;
-// `;
 
 const SearchSelect = styled.select`
   width: 25%;
   padding: 0.5rem;
-  border-radius: 8px;
+  border-radius: 12px;
   border: 1px solid #ccc;
   font-size: 1rem;
   appearance: none;
@@ -53,19 +46,6 @@ const ProductList = styled.tbody`
   width: 100%;
 `;
 
-// const ProductListItem = styled.tr`
-//   // display: flex;
-//   // justify-content: space-between;
-//   // align-items: center;
-//   padding: 10px;
-//   margin-bottom: 10px;
-//   background-color: "#f5f5f5";
-
-//   &:hover {
-//     background-color: #e5e5e5;
-//   }
-// `;
-
 const ProductName = styled.p`
   margin: 0;
   padding: 0.5rem;
@@ -78,23 +58,13 @@ const ProductPrice = styled.p`
   text-align: left;
 `;
 
-// const PaginationContainer = styled.div`
-//   display: flex;
-//   justify-content: center;
-//   margin-top: 1rem;
-// `;
-
-// const PaginationButton = styled.button`
-//   margin: 0 0.5rem;
-// `;
-
 const AddProductButton = styled.button`
   margin: 0 5px;
-  padding: 5px 10px;
+  padding: 16px 20px;
   background-color: #5B66DC;
   color: #fff;
   border: none;
-  border-radius: 4px;
+  border-radius: 12px;
   cursor: pointer;
   display: flex;
   font-size: 1rem;
@@ -103,7 +73,7 @@ const AddProductButton = styled.button`
     display: inline-block;
     width: 1rem;
     height: 1rem;
-    margin-right: 0.5rem;
+    margin-right: 1rem;
   }
   &:hover {
   background-color: #5B66FF;
@@ -126,22 +96,26 @@ const Popup = styled.div`
     padding: 2.5rem;
     max-width: 350px;
     width: 100%;
-    border-radius: 8px;
+    border-radius: 12px;
     -webkit-box-shadow: 8px 0px 20px 3px rgb(66 68 90);
     -moz-box-shadow: 8px 0px 20px 3px rgb(66 68 90);
     box-shadow: 8px 0px 20px 3px rgb(66 68 90);
   }
 `;
 
-const Table = styled.table` width: 100%; border-spacing: 0; border: 1px solid #E9EAEF; border-radius: 16px; overflow:hidden;`;
+const Table = styled.table` width: 100%; border-spacing: 0; border: 1px solid #E9EAEF; border-radius: 12px; overflow:hidden;`;
 
 const TableHead = styled.thead` background-color: #FAFBFE;`;
 
 const TableRow = styled.tr`
 border-bottom: 1px solid #ccc;
 
-&:last-child {
-border-bottom: none;
+> td{
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  &:first-child {
+  padding-left:1.5rem;
+  }
 }
 `;
 
@@ -150,9 +124,11 @@ const TableHeaderCell = styled.td` padding: 10px; font-weight: bold;`;
 const ProductListItem = styled.tr`
 border-bottom: 1px solid black;
 border-top: 1px solid black;
-border-collapse: collapse;`;
+border-collapse: collapse;
 
-const ProductCell = styled.td` padding: 10px;`;
+`;
+
+const ProductCell = styled.td` &:first-child{ padding: 1rem; }`;
 
 const Button = styled.button`
 margin: 0 5px;
@@ -160,7 +136,7 @@ padding: 5px 10px;
 background-color: #4caf50;
 color: #fff;
 border: none;
-border-radius: 4px;
+border-radius: 12px;
 cursor: pointer;
 
 &:hover {
@@ -168,7 +144,7 @@ background-color: #3e8e41;
 }
 `;
 
-const ProductActions = styled.td` display: flex; align-items: center; justify-content: center;`;
+const ProductActions = styled.td``;
 
 const PaginationContainer = styled.div`
   display: flex;
@@ -178,14 +154,17 @@ const PaginationContainer = styled.div`
 `;
 
 const PaginationButton = styled.button`
-  background-color: #007bff;
+  background-color: #5B66DC;
   color: #fff;
   border: none;
   padding: 0.5rem 1rem;
-  border-radius: 0.25rem;
+  border-radius: 0.75rem;
   margin: 0 0.5rem;
   cursor: pointer;
 
+  &:hover {
+    background-color: #5B66FF;
+  }
   &:disabled {
     background-color: #ccc;
     cursor: not-allowed;
@@ -210,12 +189,20 @@ const SearchBar = styled.div`
   display: flex;
   align-items: center;
   padding: 0.5rem;
-  background-color: #f2f2f2;
-  border-radius: 4px;
+  background-color: #FAFBFE;
+  border-radius: 12px;
+  border: 1px solid #B4BACC;
+  max-width:300px;
+  width:100%;
+  > .icon {
+    color: #A2A8BE;
+  }
 `;
 
 const SearchIcon = styled.span`
-  padding: 10px;
+  padding: 0 10px;
+  font-size: 20px;
+  display: flex;
 `;
 
 const SearchInput = styled.input`
@@ -321,8 +308,8 @@ const ProductsList = () => {
     <ProductsListContainer>
       <SearchContainer>
         <SearchBar>
-          <SearchIcon>
-            <FaSearch />
+          <SearchIcon className={`icon`}>
+            <FiSearch />
           </SearchIcon>
           <SearchInput
             type="text"
@@ -341,9 +328,9 @@ const ProductsList = () => {
           }
         >
           <option value="">Min price</option>
-          <option value="10">$10</option>
-          <option value="20">$20</option>
-          <option value="50">$50</option>
+          <option value="10">10</option>
+          <option value="20">20</option>
+          <option value="50">$0</option>
         </SearchSelect>
         <SearchSelect
           value={filterOptions.maxPrice}
@@ -355,9 +342,9 @@ const ProductsList = () => {
           }
         >
           <option value="">Max price</option>
-          <option value="50">$50</option>
-          <option value="100">$100</option>
-          <option value="200">$200</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+          <option value="200">200</option>
         </SearchSelect> */}
         <SearchSelect
           value={sortOption}
@@ -368,7 +355,7 @@ const ProductsList = () => {
           <option value="price">Cenie</option>
         </SearchSelect>
         <AddProductButton onClick={handleAddProduct}>
-        <FaPlus className="plusIcon"/>Dodaj produkt
+        <FiPlus className="plusIcon"/>Dodaj produkt
         </AddProductButton>
       </SearchContainer>
 
@@ -397,17 +384,17 @@ const ProductsList = () => {
                 <ProductName>{product.name}</ProductName>
               </ProductCell>
               <ProductCell>
-                <ProductPrice>{product.price}</ProductPrice>
+                <ProductPrice>{product.price} zł</ProductPrice>
               </ProductCell>
               <ProductCell>
                 <ProductPrice>{product.category.name}</ProductPrice>
               </ProductCell>
               <ProductActions>
               <IconButton onClick={() => handleEditProduct(product)}>
-                <FaEdit />
+                <FiEdit />
               </IconButton>
               <IconButton onClick={() => handleDeleteProduct(product)}>
-                <FaTrash />
+                <FiTrash />
               </IconButton>
               </ProductActions>
             </ProductListItem>

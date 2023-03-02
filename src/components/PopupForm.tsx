@@ -10,7 +10,7 @@ import styled from "styled-components";
 const PopupFormContainer = styled.div`
   background-color: white;
   padding: 2rem;
-  border-radius: 0.5rem;
+  border-radius: 0.75rem;
 `;
 
 const PopupFormTitle = styled.h2`
@@ -42,7 +42,7 @@ const FormControlLabel = styled.label`
 
 const FormControlInput = styled.input`
   border: 1px solid #ccc;
-  border-radius: 0.5rem;
+  border-radius: 0.75rem;
   padding: 0.75rem;
   font-size: 1rem;
   width: 100%;
@@ -60,7 +60,7 @@ const FormControlInput = styled.input`
 
 const FormControlSelect = styled.select`
   border: 1px solid #ccc;
-  border-radius: 0.5rem;
+  border-radius: 0.75rem;
   background-color: #fafbfe;
   color: #384472;
   padding: 0.75rem;
@@ -95,7 +95,7 @@ const FormButton = styled.button`
   color: white;
   padding: 1rem 1rem;
   border: none;
-  border-radius: 0.5rem;
+  border-radius: 0.75rem;
   font-size: 1rem;
   cursor: pointer;
 

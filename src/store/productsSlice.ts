@@ -38,7 +38,6 @@ export const productsSlice = createSlice({
       state.loading = false;
       state.error = null;
       state.data = action.payload;
-      console.log(action.payload)
     },
     getProductsFailure: (state, action: PayloadAction<string>) => {
       state.loading = false;
