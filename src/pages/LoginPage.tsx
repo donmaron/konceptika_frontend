@@ -87,7 +87,6 @@ const LoginPage = () => {
   const router = useRouter();
   useEffect(() => {
     if (user) {
-      // Redirect to dashboard if user is authenticated
       router.push('/');
     }
   }, [user]);
@@ -98,7 +97,6 @@ const LoginPage = () => {
 
   return (
     <div>
-      <h1>Login Page</h1>
       <LoginForm onSubmit={onSubmit} />
     </div>
   );

@@ -37,7 +37,7 @@ export const login = (data: { email: string; password: string }) => async (
   dispatch: AppDispatch
 ) => {
   try {
-    const response = await axiosInstance.post("/login", data);
+    const response = await axios.post("http://localhost:8000/api/login", data);
     localStorage.setItem('token', JSON.stringify(response.data.token));
     localStorage.setItem('user', JSON.stringify(response.data.user));
     dispatch(loginSuccess(response.data.user));
@@ -49,6 +49,8 @@ export const login = (data: { email: string; password: string }) => async (
 export const logout = () => async (dispatch: AppDispatch) => {
   try {
     await axiosInstance.post("/logout");
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
     dispatch(logoutSuccess());
   } catch (error) {
     console.error(error);
@@ -79,7 +81,7 @@ export const logout = () => async (dispatch: AppDispatch) => {
 
 export const checkLoggedIn = () => async (dispatch: AppDispatch) => {
   try {
-    const token = JSON.parse(localStorage.getItem('token') || '');
+    const token = localStorage.getItem('token') ? JSON.parse(localStorage.getItem('token') || '') : '';
     if (token) {
       const response = await axiosInstance.get("/me");
       dispatch(loginSuccess(response.data.user));

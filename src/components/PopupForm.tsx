@@ -28,8 +28,8 @@ const PopupForm = ({ mode, product, onClose }: PopupFormProps) => {
       category_id: product?.category_id ?? "",
     },
     validationSchema: Yup.object({
-      name: Yup.string().required("Required"),
-      price: Yup.number().required("Required").min(0, "Must be greater than or equal to 0"),
+      name: Yup.string().required("Wymagane"),
+      price: Yup.number().required("Wymagane").min(0, "Musi być większa lub równa 0"),
     }),
     onSubmit: async (values, { setSubmitting }) => {
       setError("");
@@ -56,28 +56,26 @@ const PopupForm = ({ mode, product, onClose }: PopupFormProps) => {
 
   return (
     <div>
-      <h2>{mode === "add" ? "Add Product" : mode === "edit" ? "Edit Product" : "Delete Product"}</h2>
+      <h2>{mode === "add" ? "Nowy produkt" : mode === "edit" ? "Edycja produktu" : "Czy na pewno chcesz usunąć produkt?"}</h2>
       <form onSubmit={formik.handleSubmit}>
-        <div>
-          <label htmlFor="name">Name</label>
+        { mode !== "delete" && <><div>
+          <label htmlFor="name">Nazwa</label>
           <input type="text" id="name" name="name" value={formik.values.name} onChange={formik.handleChange} />
           {formik.touched.name && formik.errors.name ? <div>{formik.errors.name}</div> : null}
-        </div>
-        <div>
-          <label htmlFor="price">Price</label>
-          <input type="number" id="price" name="price" value={formik.values.price} onChange={formik.handleChange} />
-          {formik.touched.price && formik.errors.price ? <div>{formik.errors.price}</div> : null}
-        </div>
-        <div>
-          <label htmlFor="price">Category</label>
-          <input type="number" id="category_id" name="category_id" value={formik.values.category_id} onChange={formik.handleChange} />
-          {formik.touched.category_id && formik.errors.category_id ? <div>{formik.errors.category_id}</div> : null}
-        </div>
+        </div><div>
+            <label htmlFor="price">Cena</label>
+            <input type="number" id="price" name="price" value={formik.values.price} onChange={formik.handleChange} />
+            {formik.touched.price && formik.errors.price ? <div>{formik.errors.price}</div> : null}
+          </div><div>
+            <label htmlFor="price">Kategoria</label>
+            <input type="number" id="category_id" name="category_id" value={formik.values.category_id} onChange={formik.handleChange} />
+            {formik.touched.category_id && formik.errors.category_id ? <div>{formik.errors.category_id}</div> : null}
+          </div></>}
         <button type="submit" disabled={formik.isSubmitting}>
-          {mode === "delete" ? "Delete" : "Save"}
+          {mode === "delete" ? "Usuń produkt" : mode === "edit" ? "Edytuj produkt" : "Dodaj produkt"}
         </button>
         <button type="button" onClick={onClose}>
-          Cancel
+          {mode === "delete" ? "Oszczędź" : "Anuluj"}
         </button>
       </form>
       {error && <div>{error}</div>}

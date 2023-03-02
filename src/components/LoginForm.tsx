@@ -54,17 +54,17 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
         <FormWrapper>
           <Form>
             <FormField>
-              <Label htmlFor="email">Email:</Label>
+              <Label htmlFor="email">Login</Label>
               <Input type="email" name="email" id="email" />
               <Error name="email" />
             </FormField>
             <FormField>
-              <Label htmlFor="password">Password:</Label>
+              <Label htmlFor="password">Hasło</Label>
               <Input type="password" name="password" id="password" />
               <Error name="password" />
             </FormField>
             <button type="submit" disabled={!formik.isValid || formik.isSubmitting}>
-              {formik.isSubmitting ? "Submitting..." : "Submit"}
+              {formik.isSubmitting ? "Loguję..." : "Zaloguj się"}
             </button>
           </Form>
         </FormWrapper>

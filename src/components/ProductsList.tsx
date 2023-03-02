@@ -10,7 +10,6 @@ import PopupForm from "./PopupForm";
 import styled from "styled-components";
 
 const ProductsListContainer = styled.div`
-  max-width: 800px;
   margin: 0 auto;
   padding: 1rem;
   background-color: #fff;
@@ -64,7 +63,7 @@ const ProductListItem = styled.li`
   }
 `;
 
-const ProductName = styled.h2`
+const ProductName = styled.p`
   margin: 0;
   padding: 0.5rem;
   text-align: center;
@@ -83,6 +82,10 @@ const PaginationContainer = styled.div`
 `;
 
 const PaginationButton = styled.button`
+  margin: 0 0.5rem;
+`;
+
+const AddProductButton = styled.button`
   margin: 0 0.5rem;
 `;
 
@@ -195,11 +198,11 @@ const ProductsList = () => {
       <SearchContainer>
         <SearchInput
           type="text"
-          placeholder="Search by name"
+          placeholder=""
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <SearchSelect
+        {/* <SearchSelect
           value={filterOptions.minPrice}
           onChange={(e) =>
             setFilterOptions({
@@ -226,27 +229,38 @@ const ProductsList = () => {
           <option value="50">$50</option>
           <option value="100">$100</option>
           <option value="200">$200</option>
-        </SearchSelect>
+        </SearchSelect> */}
         <SearchSelect
           value={sortOption}
           onChange={(e) => setSortOption(e.target.value)}
         >
-          <option value="">Sort by</option>
-          <option value="name">Name</option>
-          <option value="price">Price</option>
+          <option value="">Sortuj po</option>
+          <option value="name">Nazwie</option>
+          <option value="price">Cenie</option>
         </SearchSelect>
+        <AddProductButton onClick={handleAddProduct}>Dodaj produkt</AddProductButton>
       </SearchContainer>
 
-      {isLoading && <div>Loading...</div>}
+      {isLoading && <div>Ładowanie...</div>}
       {error && <div>{error}</div>}
-      <button onClick={handleAddProduct}>Add Product</button>
+      <ProductListItem>
+        <div>UUID</div>
+        <div>Nazwa</div>
+        <div>Cena</div>
+        <div>Kategoria</div>
+        <div></div>
+      </ProductListItem>
       <ProductList>
         {currentProducts.map((product) => (
           <ProductListItem key={product.uuid}>
+            <ProductName>{product.uuid}</ProductName>
             <ProductName>{product.name}</ProductName>
             <ProductPrice>{product.price}</ProductPrice>
-            <button onClick={() => handleEditProduct(product)}>Edit</button>
-            <button onClick={() => handleDeleteProduct(product)}>Delete</button>
+            <ProductPrice>{product.category_id}</ProductPrice>
+            <div>
+              <button onClick={() => handleEditProduct(product)}>Edytuj</button>
+              <button onClick={() => handleDeleteProduct(product)}>Usuń</button>
+            </div>
           </ProductListItem>
         ))}
       </ProductList>
@@ -269,24 +283,24 @@ const ProductsList = () => {
       </Popup> }
       <PaginationContainer>
         <PaginationButton onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage == 1 }>
-          Prev
+          {`<<`}
         </PaginationButton>
-        Page {currentPage} of{" "}
+        Strona {currentPage} z{" "}
         {Math.ceil(filteredProducts.length / productsPerPage)}
         <PaginationButton onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage > filteredProducts.length / productsPerPage}>
-          Next
+        {`>>`}
         </PaginationButton>
         <SearchSelect
           value={productsPerPage}
           onChange={(e) => setProductsPerPage(Number(e.target.value))}
         >
-          <option value="5">5 per page</option>
-          <option value="10">10 per page</option>
-          <option value="20">20 per page</option>
+          <option value="5">5 na stronę</option>
+          <option value="10">10 na stronę</option>
+          <option value="20">20 na stronę</option>
         </SearchSelect>
       </PaginationContainer>
       <div>
-        <h2>Products</h2>
+        <h2>Produkty</h2>
       </div>
     </ProductsListContainer>
   );

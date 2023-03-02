@@ -7,6 +7,7 @@ interface Product {
   uuid: string;
   name: string;
   price: number;
+  category_id: number;
 }
 
 interface ProductsState {

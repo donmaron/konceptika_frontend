@@ -1,12 +1,22 @@
 import { useEffect } from "react";
-import { useAppSelector } from '../hooks';
+import { useAppDispatch, useAppSelector } from '../hooks';
 import { selectUser } from "../authSlice";
 import { useRouter } from "next/router";
 import ProductsList from "../components/ProductsList";
+import styled from "styled-components";
+import { logout } from "../authSlice";
+
+const LogoutButton = styled.button`
+  padding: 0.5rem;
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  `;
 
 const DashboardPage = () => {
+  const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
-  const isAuthenticated = user!==null;
+  const isAuthenticated = !user;
   const router = useRouter();
 
   useEffect(() => {
@@ -15,14 +25,14 @@ const DashboardPage = () => {
     }
   }, [isAuthenticated, router]);
 
+  function handleLogout() {
+    dispatch(logout());
+  }
+
   return (
     <div>
-      <h1>Dashboard</h1>
-      <ProductsList
-        // products={products}
-        // onDeleteProduct={handleDeleteProduct}
-        // onEditProduct={handleEditProduct}
-        />
+      <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
+      <ProductsList />
     </div>
   );
 };
