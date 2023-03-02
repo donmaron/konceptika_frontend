@@ -1,5 +1,5 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { LoginFormValues, LoginFormProps } from "./types"
+import { LoginFormValues, LoginFormProps } from "./types";
 import * as Yup from "yup";
 import styled from "styled-components";
 
@@ -41,7 +41,11 @@ const validationSchema = Yup.object({
 
 export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
   return (
-    <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={onSubmit}
+    >
       {(formik) => (
         <FormWrapper>
           <Form>
@@ -55,7 +59,10 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
               <Input type="password" name="password" id="password" />
               <Error name="password" />
             </FormField>
-            <button type="submit" disabled={!formik.isValid || formik.isSubmitting}>
+            <button
+              type="submit"
+              disabled={!formik.isValid || formik.isSubmitting}
+            >
               {formik.isSubmitting ? "Submitting..." : "Submit"}
             </button>
           </Form>

@@ -8,7 +8,7 @@ const FormWrapper = styled.div`
   align-items: center;
   width: 300px;
   > form {
-    width:100%;
+    width: 100%;
   }
 `;
 
@@ -22,7 +22,7 @@ const FormField = styled.div`
 const Label = styled.label`
   font-weight: bold;
   font-size: 14px;
-  color: #3D4975;
+  color: #3d4975;
   margin-bottom: 0.5rem;
 `;
 
@@ -33,26 +33,26 @@ const Input = styled(Field)`
 `;
 
 const Error = styled(ErrorMessage)`
-  color: #CF4544;
+  color: #cf4544;
 `;
 
 const Button = styled.button`
   margin: 0.5rem 0;
   padding: 14px;
-  background-color: #5B66DC;
+  background-color: #5b66dc;
   color: #fff;
   border: none;
   border-radius: 12px;
   cursor: pointer;
-  width:100%;
+  width: 100%;
 
   &:hover {
-  background-color: #5B66FF;
+    background-color: #5b66ff;
   }
 `;
 
 const ErrorStyling = styled.p`
-  color: #CF4544;
+  color: #cf4544;
   position: absolute;
   right: 0;
   bottom: 25px;
@@ -79,21 +79,32 @@ interface LoginFormProps {
 
 export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
   return (
-    <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={onSubmit}
+    >
       {(formik) => (
         <FormWrapper>
           <Form>
             <FormField>
               <Label htmlFor="email">Login</Label>
               <Input type="email" name="email" id="email" />
-              <ErrorStyling><Error name="email" /></ErrorStyling>
+              <ErrorStyling>
+                <Error name="email" />
+              </ErrorStyling>
             </FormField>
             <FormField>
               <Label htmlFor="password">Hasło</Label>
               <Input type="password" name="password" id="password" />
-              <ErrorStyling><Error name="password" /></ErrorStyling>
+              <ErrorStyling>
+                <Error name="password" />
+              </ErrorStyling>
             </FormField>
-            <Button type="submit" disabled={!formik.isValid || formik.isSubmitting}>
+            <Button
+              type="submit"
+              disabled={!formik.isValid || formik.isSubmitting}
+            >
               {formik.isSubmitting ? "Loguję..." : "Zaloguj się"}
             </Button>
           </Form>

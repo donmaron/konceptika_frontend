@@ -6,13 +6,17 @@ export type PrivateRouteProps = {
   outlet: JSX.Element;
 };
 
-export function PrivateRoute({isAuthenticated, authenticationPath, outlet}: PrivateRouteProps) {
-    const router = useRouter();
-  if(isAuthenticated) {
+export function PrivateRoute({
+  isAuthenticated,
+  authenticationPath,
+  outlet,
+}: PrivateRouteProps) {
+  const router = useRouter();
+  if (isAuthenticated) {
     return outlet;
   } else {
     return authenticationPath;
   }
-};
+}
 
 export default PrivateRoute;

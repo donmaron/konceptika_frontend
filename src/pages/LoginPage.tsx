@@ -1,27 +1,26 @@
-import { loginSuccess } from "../authSlice";
 import { useAppDispatch, useAppSelector } from "../hooks";
-import { selectUser } from "../authSlice";
+import { selectUser } from "../store/authSlice";
 import { useEffect } from "react";
-import { useRouter } from 'next/router';
-import { login } from "../authSlice";
+import { useRouter } from "next/router";
+import { login } from "../store/authSlice";
 import { LoginForm } from "../components/LoginForm";
 import styled from "styled-components";
 
 const MainContainer = styled.div`
-  display:flex;
+  display: flex;
   justify-content: center;
   align-items: center;
-  width:100vw;
-  height:100vh;
-  `;
-  
+  width: 100vw;
+  height: 100vh;
+`;
+
 const LoginPage = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
   const router = useRouter();
   useEffect(() => {
     if (user) {
-      router.push('/');
+      router.push("/");
     }
   }, [user]);
 

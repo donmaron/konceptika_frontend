@@ -1,8 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AppDispatch } from "./store";
+import { AppDispatch } from ".";
 import axios from "axios";
-import axiosInstance from "./axiosInstance";
-import { useState } from 'react';
+import axiosInstance from "../axiosInstance";
 
 interface User {
   name: string;
@@ -32,24 +31,27 @@ export const authSlice = createSlice({
 
 export const { loginSuccess, logoutSuccess } = authSlice.actions;
 
-export const login = (data: { email: string; password: string }) => async (
-  dispatch: AppDispatch
-) => {
-  try {
-    const response = await axios.post("http://localhost:8000/api/login", data);
-    localStorage.setItem('token', JSON.stringify(response.data.token));
-    localStorage.setItem('user', JSON.stringify(response.data.user));
-    dispatch(loginSuccess(response.data.user));
-  } catch (error) {
-    console.error(error);
-  }
-};
+export const login =
+  (data: { email: string; password: string }) =>
+  async (dispatch: AppDispatch) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/api/login",
+        data
+      );
+      localStorage.setItem("token", JSON.stringify(response.data.token));
+      localStorage.setItem("user", JSON.stringify(response.data.user));
+      dispatch(loginSuccess(response.data.user));
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
 export const logout = () => async (dispatch: AppDispatch) => {
   try {
     await axiosInstance.post("/logout");
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
     dispatch(logoutSuccess());
   } catch (error) {
     console.error(error);
@@ -58,7 +60,9 @@ export const logout = () => async (dispatch: AppDispatch) => {
 
 export const checkLoggedIn = () => async (dispatch: AppDispatch) => {
   try {
-    const token = localStorage.getItem('token') ? JSON.parse(localStorage.getItem('token') || '') : '';
+    const token = localStorage.getItem("token")
+      ? JSON.parse(localStorage.getItem("token") || "")
+      : "";
     if (token) {
       const response = await axiosInstance.get("/me");
       dispatch(loginSuccess(response.data.user));

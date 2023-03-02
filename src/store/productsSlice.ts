@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppDispatch } from ".";
 import axiosInstance from "../axiosInstance";
-import axios from "axios";
 
 interface Product {
   uuid: string;
@@ -9,8 +8,8 @@ interface Product {
   price: number;
   category_id: number;
   category: {
-    id: number,
-    name: string
+    id: number;
+    name: string;
   };
 }
 
@@ -46,7 +45,8 @@ export const productsSlice = createSlice({
   },
 });
 
-export const { getProductsStart, getProductsSuccess, getProductsFailure } = productsSlice.actions;
+export const { getProductsStart, getProductsSuccess, getProductsFailure } =
+  productsSlice.actions;
 
 export const fetchProducts = () => async (dispatch: AppDispatch) => {
   dispatch(getProductsStart());
@@ -58,8 +58,11 @@ export const fetchProducts = () => async (dispatch: AppDispatch) => {
   }
 };
 
-export const selectProductsLoading = (state: { products: ProductsState }) => state.products.loading;
-export const selectProductsError = (state: { products: ProductsState }) => state.products.error;
-export const selectProducts = (state: { products: ProductsState }) => state.products.data;
+export const selectProductsLoading = (state: { products: ProductsState }) =>
+  state.products.loading;
+export const selectProductsError = (state: { products: ProductsState }) =>
+  state.products.error;
+export const selectProducts = (state: { products: ProductsState }) =>
+  state.products.data;
 
 export default productsSlice.reducer;

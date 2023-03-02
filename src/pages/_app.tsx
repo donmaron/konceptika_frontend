@@ -3,7 +3,7 @@ import { Provider } from "react-redux";
 import { ThemeProvider } from "styled-components";
 import store from "../store";
 import { GlobalStyles } from "../GlobalStyles";
-import { StaticRouter } from 'react-router-dom/server';
+import { StaticRouter } from "react-router-dom/server";
 
 const theme = {
   colors: {

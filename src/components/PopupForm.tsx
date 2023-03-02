@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
-import { useAppSelector, useAppDispatch } from "../hooks";
+import { useAppDispatch } from "../hooks";
 import { fetchProducts } from "../store/productsSlice";
 import axiosInstance from "../axiosInstance";
 import styled from "styled-components";
@@ -187,7 +186,7 @@ const PopupForm = ({ mode, product, onClose }: PopupFormProps) => {
   return (
     <PopupFormContainer className="popup">
       <form onSubmit={formik.handleSubmit}>
-        <PopupFormTitle className={`${mode === 'delete' ? "delete" : ""}`}>
+        <PopupFormTitle className={`${mode === "delete" ? "delete" : ""}`}>
           {mode === "add"
             ? "Nowy produkt"
             : mode === "edit"
@@ -198,9 +197,7 @@ const PopupForm = ({ mode, product, onClose }: PopupFormProps) => {
         {mode !== "delete" && (
           <>
             <FormControl className="form-control">
-              <FormControlLabel htmlFor="name">
-                Nazwa:
-              </FormControlLabel>
+              <FormControlLabel htmlFor="name">Nazwa:</FormControlLabel>
               <FormControlInput
                 type="text"
                 id="name"
@@ -257,7 +254,9 @@ const PopupForm = ({ mode, product, onClose }: PopupFormProps) => {
             </FormControl>
           </>
         )}
-        <FormActions className={`form-actions ${mode === 'delete' ? "delete" : ""}`}>
+        <FormActions
+          className={`form-actions ${mode === "delete" ? "delete" : ""}`}
+        >
           <FormButton type="submit" disabled={formik.isSubmitting}>
             {mode === "delete"
               ? "Usuń produkt"

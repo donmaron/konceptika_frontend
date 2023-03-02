@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, SetStateAction } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import {
   fetchProducts,
@@ -372,7 +372,9 @@ const ProductsList = () => {
           value={sortOption}
           onChange={(e) => setSortOption(e.target.value)}
         >
-          <option value="" disabled>Sortuj</option>
+          <option value="" disabled>
+            Sortuj
+          </option>
           <option value="name">Nazwa</option>
           <option value="price">Cena</option>
           <option value="category">Kategoria</option>
