@@ -43,17 +43,16 @@ const SearchSelect = styled.select`
   background-size: 1rem auto;
 `;
 
-const ProductList = styled.ul`
-  list-style: none;
+const ProductList = styled.tbody`
   margin: 0;
   padding: 0;
   width: 100%;
 `;
 
-const ProductListItem = styled.li`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+const ProductListItem = styled.tr`
+  // display: flex;
+  // justify-content: space-between;
+  // align-items: center;
   padding: 10px;
   margin-bottom: 10px;
   background-color: "#f5f5f5";
@@ -66,13 +65,13 @@ const ProductListItem = styled.li`
 const ProductName = styled.p`
   margin: 0;
   padding: 0.5rem;
-  text-align: center;
+  text-align: left;
 `;
 
 const ProductPrice = styled.p`
   margin: 0;
   padding: 0.5rem;
-  text-align: center;
+  text-align: left;
 `;
 
 const PaginationContainer = styled.div`
@@ -238,58 +237,89 @@ const ProductsList = () => {
           <option value="name">Nazwie</option>
           <option value="price">Cenie</option>
         </SearchSelect>
-        <AddProductButton onClick={handleAddProduct}>Dodaj produkt</AddProductButton>
+        <AddProductButton onClick={handleAddProduct}>
+          Dodaj produkt
+        </AddProductButton>
       </SearchContainer>
 
       {isLoading && <div>Ładowanie...</div>}
       {error && <div>{error}</div>}
-      <ProductListItem>
-        <div>UUID</div>
-        <div>Nazwa</div>
-        <div>Cena</div>
-        <div>Kategoria</div>
-        <div></div>
-      </ProductListItem>
-      <ProductList>
-        {currentProducts.map((product) => (
-          <ProductListItem key={product.uuid}>
-            <ProductName>{product.uuid}</ProductName>
-            <ProductName>{product.name}</ProductName>
-            <ProductPrice>{product.price}</ProductPrice>
-            <ProductPrice>{product.category_id}</ProductPrice>
-            <div>
-              <button onClick={() => handleEditProduct(product)}>Edytuj</button>
-              <button onClick={() => handleDeleteProduct(product)}>Usuń</button>
-            </div>
-          </ProductListItem>
-        ))}
-      </ProductList>
-      { ( showAddForm || showEditForm || showDeleteForm ) && <Popup>
-        {showAddForm && <PopupForm mode="add" onClose={handleCloseForms} />}
-        {showEditForm && selectedProduct && (
-          <PopupForm
-            mode="edit"
-            product={selectedProduct}
-            onClose={handleCloseForms}
-          />
-        )}
-        {showDeleteForm && selectedProduct && (
-          <PopupForm
-            mode="delete"
-            product={selectedProduct}
-            onClose={handleCloseForms}
-          />
-        )}
-      </Popup> }
+      <table>
+        <thead>
+          <tr>
+            {/* <ProductListItem> */}
+
+            <td>UUID</td>
+            <td>Nazwa</td>
+            <td>Cena</td>
+            <td>Kategoria</td>
+            <td></td>
+            {/* </ProductListItem> */}
+          </tr>
+        </thead>
+        <ProductList>
+          {currentProducts.map((product) => (
+            <ProductListItem key={product.uuid}>
+              <td>
+                <ProductName>{product.uuid}</ProductName>
+              </td>
+              <td>
+                <ProductName>{product.name}</ProductName>
+              </td>
+              <td>
+                <ProductPrice>{product.price}</ProductPrice>
+              </td>
+              <td>
+                <ProductPrice>{product.category_id}</ProductPrice>
+              </td>
+              <td>
+                <button onClick={() => handleEditProduct(product)}>
+                  Edytuj
+                </button>
+                <button onClick={() => handleDeleteProduct(product)}>
+                  Usuń
+                </button>
+              </td>
+            </ProductListItem>
+          ))}
+        </ProductList>
+      </table>
+      {(showAddForm || showEditForm || showDeleteForm) && (
+        <Popup>
+          {showAddForm && <PopupForm mode="add" onClose={handleCloseForms} />}
+          {showEditForm && selectedProduct && (
+            <PopupForm
+              mode="edit"
+              product={selectedProduct}
+              onClose={handleCloseForms}
+            />
+          )}
+          {showDeleteForm && selectedProduct && (
+            <PopupForm
+              mode="delete"
+              product={selectedProduct}
+              onClose={handleCloseForms}
+            />
+          )}
+        </Popup>
+      )}
       <PaginationContainer>
-        <PaginationButton onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage == 1 }>
+        <PaginationButton
+          onClick={() => setCurrentPage(currentPage - 1)}
+          disabled={currentPage == 1}
+        >
           {`<<`}
         </PaginationButton>
         Strona {currentPage} z{" "}
         {Math.ceil(filteredProducts.length / productsPerPage)}
-        <PaginationButton onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage > filteredProducts.length / productsPerPage}>
-        {`>>`}
+        <PaginationButton
+          onClick={() => setCurrentPage(currentPage + 1)}
+          disabled={currentPage > filteredProducts.length / productsPerPage}
+        >
+          {`>>`}
         </PaginationButton>
+      </PaginationContainer>
+      <PaginationContainer>
         <SearchSelect
           value={productsPerPage}
           onChange={(e) => setProductsPerPage(Number(e.target.value))}
@@ -299,9 +329,6 @@ const ProductsList = () => {
           <option value="20">20 na stronę</option>
         </SearchSelect>
       </PaginationContainer>
-      <div>
-        <h2>Produkty</h2>
-      </div>
     </ProductsListContainer>
   );
 };
