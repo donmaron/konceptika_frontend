@@ -39,8 +39,10 @@ export const login =
         "http://km-rekrutacja.atwebpages.com/api/login",
         data
       );
-      localStorage.setItem("token", JSON.stringify(response.data.token));
-      localStorage.setItem("user", JSON.stringify(response.data.user));
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem("token", JSON.stringify(response.data.token));
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+      }
       dispatch(loginSuccess(response.data.user));
     } catch (error) {
       console.error(error);
@@ -49,9 +51,11 @@ export const login =
 
 export const logout = () => async (dispatch: AppDispatch) => {
   try {
-    await axiosInstance.post("/logout");
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    await axiosInstance.post("/logout")
+    if (typeof localStorage !== 'undefined') {;
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+    }
     dispatch(logoutSuccess());
   } catch (error) {
     console.error(error);
@@ -60,12 +64,14 @@ export const logout = () => async (dispatch: AppDispatch) => {
 
 export const checkLoggedIn = () => async (dispatch: AppDispatch) => {
   try {
-    const token = localStorage.getItem("token")
-      ? JSON.parse(localStorage.getItem("token") || "")
-      : "";
-    if (token) {
-      const response = await axiosInstance.get("/me");
-      dispatch(loginSuccess(response.data.user));
+    if (typeof localStorage !== 'undefined') {
+      const token = localStorage.getItem("token")
+        ? JSON.parse(localStorage.getItem("token") || "")
+        : "";
+      if (token) {
+        const response = await axiosInstance.get("/me");
+        dispatch(loginSuccess(response.data.user));
+      }
     }
   } catch (error) {
     console.error(error);
